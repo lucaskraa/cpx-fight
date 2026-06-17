@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b14">
+  <title>CPX Fight</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section id="loadingScreen" class="screen screen--active loading-screen">
+      <div class="loading-card">
+        <div class="brand-mark">CPX</div>
+        <h1>CPX <span>FIGHT</span></h1>
+        <p>O Complexo entrou na luta.</p>
+        <div class="loading-track"><div id="loadingFill" class="loading-fill"></div></div>
+        <strong id="loadingStatus">Carregando lutadores...</strong>
+      </div>
+    </section>
+
+    <section id="menuScreen" class="screen menu-screen">
+      <div class="menu-backdrop"></div>
+      <div class="menu-content">
+        <div class="brand-lockup">
+          <div class="brand-mark brand-mark--large">CPX</div>
+          <div>
+            <p class="eyebrow">COMPLEXO DO CAXIMBA APRESENTA</p>
+            <h1>CPX <span>FIGHT</span></h1>
+            <p class="tagline">Escolha seu lutador. Carregue o especial. Vença dois rounds.</p>
+          </div>
+        </div>
+        <button id="playButton" class="primary-button">INICIAR CONFRONTO</button>
+        <button id="controlsButton" class="secondary-button">VER CONTROLES</button>
+        <p class="menu-footnote">1v1 local no mesmo teclado</p>
+      </div>
+    </section>
+
+    <section id="selectScreen" class="screen select-screen">
+      <header class="select-header">
+        <p class="eyebrow">SELEÇÃO DE PERSONAGEM</p>
+        <h2>ESCOLHAM SEUS LUTADORES</h2>
+        <p>Jogador 1 usa A/D + F. Jogador 2 usa ←/→ + J.</p>
+      </header>
+
+      <div class="versus-layout">
+        <article class="player-select player-select--one">
+          <div class="player-select__label">JOGADOR 1</div>
+          <div id="p1Preview" class="fighter-preview"></div>
+          <div id="p1Roster" class="roster-row"></div>
+          <div id="p1Ready" class="ready-badge">A/D PARA ESCOLHER · F PARA CONFIRMAR</div>
+        </article>
+
+        <div class="versus-emblem">VS</div>
+
+        <article class="player-select player-select--two">
+          <div class="player-select__label">JOGADOR 2</div>
+          <div id="p2Preview" class="fighter-preview"></div>
+          <div id="p2Roster" class="roster-row"></div>
+          <div id="p2Ready" class="ready-badge">←/→ PARA ESCOLHER · J PARA CONFIRMAR</div>
+        </article>
+      </div>
+
+      <button id="backToMenuButton" class="secondary-button select-back">VOLTAR</button>
+    </section>
+
+    <section id="fightScreen" class="screen fight-screen">
+      <div class="fight-hud">
+        <div class="hud-player hud-player--one">
+          <div class="hud-identity">
+            <img id="p1HudPortrait" alt="Lutador do jogador 1">
+            <div><strong id="p1HudName">JOGADOR 1</strong><span id="p1RoundWins">○ ○</span></div>
+          </div>
+          <div class="bar health-bar"><div id="p1HealthFill" class="bar__fill"></div></div>
+          <div class="bar meter-bar"><div id="p1MeterFill" class="bar__fill"></div></div>
+        </div>
+
+        <div class="round-panel">
+          <strong id="roundLabel">ROUND 1</strong>
+          <span id="timerLabel">3:00</span>
+        </div>
+
+        <div class="hud-player hud-player--two">
+          <div class="hud-identity hud-identity--reverse">
+            <img id="p2HudPortrait" alt="Lutador do jogador 2">
+            <div><strong id="p2HudName">JOGADOR 2</strong><span id="p2RoundWins">○ ○</span></div>
+          </div>
+          <div class="bar health-bar"><div id="p2HealthFill" class="bar__fill"></div></div>
+          <div class="bar meter-bar"><div id="p2MeterFill" class="bar__fill"></div></div>
+        </div>
+      </div>
+
+      <div class="arena-frame">
+        <canvas id="gameCanvas" width="1280" height="720" aria-label="Arena do CPX Fight"></canvas>
+        <div id="announcerText" class="announcer-text"></div>
+        <div id="comboText" class="combo-text"></div>
+        <button id="pauseButton" class="pause-button" aria-label="Pausar jogo">Ⅱ</button>
+      </div>
+
+      <div class="fight-controls">
+        <div><b>J1</b> A/D mover · W pular · S defender · F soco · G chute · H especial</div>
+        <div><b>J2</b> ←/→ mover · ↑ pular · ↓ defender · J soco · K chute · L especial</div>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="screen result-screen">
+      <div class="result-card">
+        <p class="eyebrow">CONFRONTO ENCERRADO</p>
+        <h2 id="resultTitle">JOGADOR 1 VENCEU</h2>
+        <img id="resultPortrait" alt="Vencedor">
+        <p id="resultSubtitle">Vitória por dois rounds.</p>
+        <div class="result-actions">
+          <button id="rematchButton" class="primary-button">REVANCHE</button>
+          <button id="changeFightersButton" class="secondary-button">TROCAR LUTADORES</button>
+        </div>
+      </div>
+    </section>
+
+    <dialog id="controlsDialog" class="controls-dialog">
+      <button id="closeControlsButton" class="dialog-close">×</button>
+      <h2>CONTROLES</h2>
+      <div class="controls-grid">
+        <div><h3>JOGADOR 1</h3><p><kbd>A</kbd><kbd>D</kbd> mover</p><p><kbd>W</kbd> pular</p><p><kbd>S</kbd> defender</p><p><kbd>F</kbd> soco</p><p><kbd>G</kbd> chute</p><p><kbd>H</kbd> especial carregado</p></div>
+        <div><h3>JOGADOR 2</h3><p><kbd>←</kbd><kbd>→</kbd> mover</p><p><kbd>↑</kbd> pular</p><p><kbd>↓</kbd> defender</p><p><kbd>J</kbd> soco</p><p><kbd>K</kbd> chute</p><p><kbd>L</kbd> especial carregado</p></div>
+      </div>
+      <p class="dialog-note">O especial só pode ser usado quando a barra estiver cheia.</p>
+    </dialog>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
